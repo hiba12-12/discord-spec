@@ -36,6 +36,7 @@ export function usePeerConnections({
   consumeSignal: ConsumeSignal;
 }): PeerConnectionsResult {
   const peersRef = useRef(new Map<Id<"users">, PeerEntry>());
+  const processingSignalIdsRef = useRef(new Set<Id<"signals">>());
   const [remoteStreams, setRemoteStreams] = useState(new Map<Id<"users">, MediaStream>());
   const [connectionStates, setConnectionStates] = useState(
     new Map<Id<"users">, RTCIceConnectionState>(),
@@ -170,14 +171,29 @@ export function usePeerConnections({
     };
   }, []);
 
-  // Apply incoming signals via the perfect-negotiation pattern (research.md §4).
+  // Apply incoming signals via the perfect-negotiation pattern (research.md §4). This query
+  // reactively re-fires on every new signal for the call (from any participant), which means it
+  // routinely re-delivers a signal this effect already started handling — `consumeSignal`'s
+  // delete is async, so there's always a window before it lands where the same row is still
+  // present in `incomingSignals`. Without a guard, a fast burst of ICE candidates would apply
+  // the same offer/answer twice, throwing `setRemoteDescription` errors on an already-settled
+  // connection ("Called in wrong state: stable") — this was especially visible in DM calls,
+  // where extra reactive queries (thread lookup, active-call banner) mean more re-renders during
+  // the connection-setup window, widening the race. Track in-flight signal IDs so each one is
+  // only ever dispatched once.
   useEffect(() => {
     for (const signal of incomingSignals) {
+      if (processingSignalIdsRef.current.has(signal._id)) continue;
       const entry = peersRef.current.get(signal.fromUserId);
       if (!entry) continue;
-      void applySignal(entry, signal, myUserId, signal.fromUserId, callId, sendSignal).then(() =>
-        consumeSignal({ signalId: signal._id }),
-      );
+
+      processingSignalIdsRef.current.add(signal._id);
+      void applySignal(entry, signal, myUserId, signal.fromUserId, callId, sendSignal)
+        .then(() => consumeSignal({ signalId: signal._id }))
+        .catch((err) => console.error("Failed to apply call signal", err))
+        .finally(() => {
+          processingSignalIdsRef.current.delete(signal._id);
+        });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [incomingSignals]);

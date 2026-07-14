@@ -94,7 +94,10 @@ function ServerView() {
         {activeChannel?.type === "voice" ? (
           <VoiceChannelView channelId={channelId as Id<"channels">} />
         ) : (
-          <ChatPane scope={{ kind: "channel", channelId: channelId as Id<"channels"> }} />
+          <ChatPane
+            scope={{ kind: "channel", channelId: channelId as Id<"channels"> }}
+            channelName={activeChannel?.name}
+          />
         )}
       </div>
       <MemberList

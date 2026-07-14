@@ -6,7 +6,13 @@ import type { MessageScope } from "../../lib/messageScope";
 const TYPING_THROTTLE_MS = 2_000;
 const STOP_TYPING_DELAY_MS = 3_000;
 
-export function Composer({ scope }: { scope: MessageScope }) {
+export function Composer({
+  scope,
+  channelName,
+}: {
+  scope: MessageScope;
+  channelName?: string;
+}) {
   const sendMessage = useMutation(api.messages.sendMessage);
   const sendDirectMessage = useMutation(api.directMessages.sendDirectMessage);
   const setTyping = useMutation(api.typingIndicators.setTyping);
@@ -62,7 +68,7 @@ export function Composer({ scope }: { scope: MessageScope }) {
           handleKeystroke();
         }}
         onKeyDown={handleKeyDown}
-        placeholder={scope.kind === "channel" ? "Message #general" : "Message"}
+        placeholder={scope.kind === "channel" ? `Message #${channelName ?? "channel"}` : "Message"}
         rows={1}
         className="w-full resize-none rounded bg-discord-bg-tertiary px-3 py-2 text-discord-text-normal outline-none"
       />
