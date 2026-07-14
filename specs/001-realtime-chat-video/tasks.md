@@ -221,7 +221,7 @@ who's connected — independent of text messaging. DM video call tested the same
 - [ ] T063 [P] Accessibility pass on the dark theme (contrast, focus states, keyboard nav) across `src/`
 - [ ] T064 Security review pass: confirm every `convex/*.ts` query/mutation calls one of the `authz.ts` helpers from T012, per `contracts/convex-api.md`'s auth column (constitution Principle IV)
 - [ ] T065 [P] Handle `getUserMedia` permission denial gracefully in `src/features/calls/CallView.tsx` (clear error state, not a silent failure — plan-audit finding)
-- [ ] T066 [P] Write `README.md` setup/run instructions (Convex dev deployment, env vars, `npm run dev`)
+- [X] T066 [P] Write `README.md` setup/run instructions (Convex dev deployment, env vars, `npm run dev`)
 
 ---
 
