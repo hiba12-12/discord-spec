@@ -7,3 +7,15 @@ body,
 #root {
   height: 100%;
 }
+
+/* Components style inputs/buttons/links with `outline-none` for a custom look, which otherwise
+   removes the browser's default focus indicator entirely — a keyboard-navigation accessibility
+   gap (WCAG 2.4.7). Restore a visible indicator for keyboard focus only (not mouse clicks). */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid theme("colors.discord.brand");
+  outline-offset: 2px;
+}

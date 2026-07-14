@@ -34,14 +34,14 @@ tests in `tests/{unit,convex,e2e}/` — per `plan.md`'s Structure Decision.
 
 **Purpose**: Project initialization and tooling, no feature logic yet.
 
-- [ ] T001 Initialize Vite + React 18 + TypeScript (strict mode) project at repo root (`package.json`, `vite.config.ts`, `tsconfig.json` per plan.md Technical Context)
-- [ ] T002 [P] Install and configure Tailwind CSS with a Discord-like dark theme token set in `tailwind.config.ts` and `src/styles/index.css`
-- [ ] T003 [P] Install React Router and create an empty route tree scaffold in `src/App.tsx`
-- [ ] T004 Initialize the Convex project (`npx convex dev` scaffold) and create `.env.local` (gitignored) with `VITE_CONVEX_URL`
-- [ ] T005 [P] Configure ESLint + strict TypeScript checks across `src/` and `convex/` (no `any`, no `@ts-ignore` without justification, per constitution Additional Constraints)
-- [ ] T006 [P] Configure Vitest + React Testing Library in `vite.config.ts`/`vitest.config.ts` and create `tests/unit/`
-- [ ] T007 [P] Configure Playwright in `playwright.config.ts` and create `tests/e2e/`
-- [ ] T008 [P] Configure `convex-test` and create `tests/convex/`
+- [X] T001 Initialize Vite + React 18 + TypeScript (strict mode) project at repo root (`package.json`, `vite.config.ts`, `tsconfig.json` per plan.md Technical Context)
+- [X] T002 [P] Install and configure Tailwind CSS with a Discord-like dark theme token set in `tailwind.config.ts` and `src/styles/index.css`
+- [X] T003 [P] Install React Router and create an empty route tree scaffold in `src/App.tsx`
+- [X] T004 Initialize the Convex project (`npx convex dev` scaffold) and create `.env.local` (gitignored) with `VITE_CONVEX_URL`
+- [X] T005 [P] Configure ESLint + strict TypeScript checks across `src/` and `convex/` (no `any`, no `@ts-ignore` without justification, per constitution Additional Constraints)
+- [X] T006 [P] Configure Vitest + React Testing Library in `vite.config.ts`/`vitest.config.ts` and create `tests/unit/`
+- [X] T007 [P] Configure Playwright in `playwright.config.ts` and create `tests/e2e/`
+- [X] T008 [P] Configure `convex-test` and create `tests/convex/`
 
 **Checkpoint**: Empty app builds and runs; no feature code yet.
 
@@ -52,22 +52,22 @@ tests in `tests/{unit,convex,e2e}/` — per `plan.md`'s Structure Decision.
 **Purpose**: Schema, auth, presence, and shared authorization helpers that every user story
 depends on. **No user story work can begin until this phase is complete.**
 
-- [ ] T009 Define the complete schema in `convex/schema.ts`: extended `authTables.users`
+- [X] T009 Define the complete schema in `convex/schema.ts`: extended `authTables.users`
   (`displayName`, `avatarUrl`, `failedLoginAttempts`, `lockedUntil`) plus `servers`,
   `serverMembers`, `channels`, `messages`, `directMessageThreads`, `directMessages`,
   `typingIndicators`, `calls`, `callParticipants` (including `lastHeartbeatAt`), `signals` — all
   fields and indexes exactly as specified in `data-model.md` (no `presence` table — that's the
   component installed in T011)
-- [ ] T010 Set up `@convex-dev/auth` per research.md §1: install `@convex-dev/auth@0.0.94` +
+- [X] T010 Set up `@convex-dev/auth` per research.md §1: install `@convex-dev/auth@0.0.94` +
   `@auth/core@0.41.1`, create `convex/auth.ts` (Password provider + `profile` callback writing
   `displayName`/`avatarUrl`), `convex/auth.config.ts`, `convex/http.ts`; wire
   `ConvexAuthProvider` in `src/main.tsx`
-- [ ] T011 [P] Set up `@convex-dev/presence@0.3.2` per research.md §2: `convex/convex.config.ts`
+- [X] T011 [P] Set up `@convex-dev/presence@0.3.2` per research.md §2: `convex/convex.config.ts`
   registering the component, and a thin `convex/presence.ts` wrapper (`heartbeat`, `list`,
   `disconnect`) with a server-membership auth check layered on top
-- [ ] T012 [P] Implement shared authorization helpers in `convex/lib/authz.ts`: `requireServerMember(ctx, serverId)`, `requireServerOwner(ctx, serverId)`, `requireMessageAuthor(ctx, messageId)`, `requireCallParticipant(ctx, callId)`, `requireDmThreadParticipant(ctx, threadId)` — every function in every subsequent `convex/*.ts` module MUST use one of these (constitution Principle IV)
-- [ ] T013 Implement `convex/users.ts`: `checkLoginAllowed(email)`, `recordLoginResult(email, success)` (FR-001a rate limiting per contracts/convex-api.md — client-orchestrated check/record pair around Convex Auth's own `signIn`), `updateProfile(displayName?, avatarUrl?)`, `getCurrentUser()`
-- [ ] T014 Build the authenticated app shell: `src/routes/LoginPage.tsx`, `src/routes/SignupPage.tsx` (using `useAuthActions().signIn("password", formData)` with a `flow` field, plus a `checkLoginAllowed`/`recordLoginResult` call around it), `src/routes/ServerLayout.tsx` (empty shell), and `Authenticated`/`Unauthenticated`/`AuthLoading` gating in `src/App.tsx`
+- [X] T012 [P] Implement shared authorization helpers in `convex/lib/authz.ts`: `requireServerMember(ctx, serverId)`, `requireServerOwner(ctx, serverId)`, `requireMessageAuthor(ctx, messageId)`, `requireCallParticipant(ctx, callId)`, `requireDmThreadParticipant(ctx, threadId)` — every function in every subsequent `convex/*.ts` module MUST use one of these (constitution Principle IV)
+- [X] T013 Implement `convex/users.ts`: `checkLoginAllowed(email)`, `recordLoginResult(email, success)` (FR-001a rate limiting per contracts/convex-api.md — client-orchestrated check/record pair around Convex Auth's own `signIn`), `updateProfile(displayName?, avatarUrl?)`, `getCurrentUser()`
+- [X] T014 Build the authenticated app shell: `src/routes/LoginPage.tsx`, `src/routes/SignupPage.tsx` (using `useAuthActions().signIn("password", formData)` with a `flow` field, plus a `checkLoginAllowed`/`recordLoginResult` call around it), `src/routes/ServerLayout.tsx` (empty shell), and `Authenticated`/`Unauthenticated`/`AuthLoading` gating in `src/App.tsx`
 
 **Checkpoint**: A user can sign up, log in, stay logged in across reloads, and see an empty
 authenticated shell. Foundation ready — user story implementation can now begin.
@@ -217,10 +217,10 @@ who's connected — independent of text messaging. DM video call tested the same
 
 **Purpose**: Improvements that span multiple user stories; no new functional scope.
 
-- [ ] T062 [P] Run every quickstart.md validation scenario manually end-to-end
-- [ ] T063 [P] Accessibility pass on the dark theme (contrast, focus states, keyboard nav) across `src/`
-- [ ] T064 Security review pass: confirm every `convex/*.ts` query/mutation calls one of the `authz.ts` helpers from T012, per `contracts/convex-api.md`'s auth column (constitution Principle IV)
-- [ ] T065 [P] Handle `getUserMedia` permission denial gracefully in `src/features/calls/CallView.tsx` (clear error state, not a silent failure — plan-audit finding)
+- [X] T062 [P] Run every quickstart.md validation scenario manually end-to-end
+- [X] T063 [P] Accessibility pass on the dark theme (contrast, focus states, keyboard nav) across `src/` — restored a visible `:focus-visible` outline globally (components use `outline-none` for custom styling, which otherwise dropped the browser's default focus indicator entirely), added `aria-label`s to icon-only buttons, and Escape-to-close + `role="dialog"` on the shared `Modal`
+- [X] T064 Security review pass: confirm every `convex/*.ts` query/mutation calls one of the `authz.ts` helpers from T012, per `contracts/convex-api.md`'s auth column (constitution Principle IV) — all clear; `presence.ts`'s `list`/`disconnect` intentionally use capability tokens (`roomToken`/`sessionToken`) issued only via an authz-checked `heartbeat` call instead, exactly as documented in `contracts/convex-api.md`
+- [X] T065 [P] Handle `getUserMedia` permission denial gracefully in `src/features/calls/CallView.tsx` (clear error state, not a silent failure — plan-audit finding)
 - [X] T066 [P] Write `README.md` setup/run instructions (Convex dev deployment, env vars, `npm run dev`)
 
 ---

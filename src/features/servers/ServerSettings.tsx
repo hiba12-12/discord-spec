@@ -71,6 +71,7 @@ export function ServerSettings({
               type="button"
               onClick={() => setEditingName(true)}
               title="Rename server"
+              aria-label="Rename server"
               className="text-sm text-discord-text-muted hover:text-discord-text-normal"
             >
               ✏️

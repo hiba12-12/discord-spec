@@ -102,6 +102,7 @@ export function NotificationCenter() {
                 e.stopPropagation();
                 dismiss(toast.id);
               }}
+              aria-label="Dismiss notification"
               className="text-discord-text-muted hover:text-discord-text-normal"
             >
               ✕

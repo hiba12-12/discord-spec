@@ -83,6 +83,7 @@ export function ChannelSidebar({
                   type="button"
                   onClick={() => setChannelToRename(channel)}
                   title="Rename channel"
+                  aria-label={`Rename channel ${channel.name}`}
                   className="hover:text-discord-text-normal"
                 >
                   ✏️
@@ -91,6 +92,7 @@ export function ChannelSidebar({
                   type="button"
                   onClick={() => setChannelToDelete(channel)}
                   title="Delete channel"
+                  aria-label={`Delete channel ${channel.name}`}
                   className="hover:text-discord-danger"
                 >
                   🗑️
